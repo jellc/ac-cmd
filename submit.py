@@ -17,12 +17,12 @@ bundler = importlib.import_module('my-bundle')
 
 
 def bundle_and_submit(src, prob, dire=None):
-    bund = src[0:len(src) - 4] + "_bundled"
-    if bundler.bundle.main([os.path.abspath(src), os.path.abspath(bund)]):
+    bdl = os.path.splitext(src)[0] + ".bdl"
+    if bundler.bundle.main([os.path.abspath(src), os.path.abspath(bdl)]):
         logger.error(" " + pycolor.BRIGHT_RED + src + ": bundle failed.")
         sys.exit(1)
     logger.info(pycolor.BLUE + " submitting to " + prob.upper() + "..." + pycolor.END)
-    sub_args = ["atcoder-tools", "submit", "-u", "-f", "--code", bund]
+    sub_args = ["atcoder-tools", "submit", "-u", "-f", "--code", bdl]
     subprocess.call(sub_args, cwd=dire)
 
 

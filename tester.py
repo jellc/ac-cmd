@@ -43,13 +43,22 @@ def main(args):
     if not srcs:
         logger.error(pycolor.BRIGHT_RED + " no source code found.")
 
+    first = True
+    exit_stat = 0
+
     for f in srcs:
+        if first:
+            first = False
+        else:
+            print(pycolor.BLUE + "-" * 50 + pycolor.END)
         logger.info(" compiling " + f + "...")
         ff = os.path.splitext(f)[0]
         ret = subprocess.call(["g++", f, "-o", ff] + options)
         if ret:
             logger.error(pycolor.BRIGHT_RED + " compilation error.")
-            sys.exit(1)
+            exit_stat = 1
         cmd[3] = './' + ff
         logger.info(" testing " + ff + "...")
         ret = subprocess.call(cmd)
+
+    sys.exit(exit_stat)

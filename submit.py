@@ -67,7 +67,7 @@ def main(argv):
         srcs = glob.glob('*.cpp')
         if not srcs:
             logger.error(pycolor.BRIGHT_RED + " no source file found." + pycolor.END)
-        elif len(src) > 1:
+        elif len(srcs) > 1:
             logger.error(pycolor.BRIGHT_RED + " multiple sources exist." + pycolor.END)
         else:
             src = srcs[0]

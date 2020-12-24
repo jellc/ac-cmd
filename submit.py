@@ -21,7 +21,7 @@ def bundle_and_submit(src, prob, dire=None):
     if bundler.bundle.main([os.path.abspath(src), os.path.abspath(bdl)]):
         logger.error(" " + pycolor.BRIGHT_RED + src + ": bundle failed.")
         sys.exit(1)
-    logger.info(pycolor.BLUE + " submitting to " + prob.upper() + "..." + pycolor.END)
+    logger.info(pycolor.BLUE + " Submitting to " + prob.upper() + "..." + pycolor.END)
     sub_args = ["atcoder-tools", "submit", "-u", "-f", "--code", bdl]
     subprocess.call(sub_args, cwd=dire)
 
@@ -29,7 +29,7 @@ def bundle_and_submit(src, prob, dire=None):
 def confirm(lst):
     logger.critical(pycolor.BLUE + " Are you sure to submit " + str(lst) + " ? (y/n)" + pycolor.END)
     if input() != "y":
-        logger.info(pycolor.BLUE + " canceled.")
+        logger.info(pycolor.PURPLE + " Canceled.")
         sys.exit(1)
 
 
@@ -54,10 +54,10 @@ def main(argv):
                 os.chdir(prob)
                 src = glob.glob('*.cpp')
                 if not src:
-                    logger.error(" " + pycolor.RED + prob.upper() + ": no source file found." + pycolor.END)
+                    logger.error(" " + pycolor.RED + prob.upper() + ": No source file found." + pycolor.END)
                     exit(1)
                 elif len(src) > 1:
-                    logger.error(" " + pycolor.RED + prob.upper() + ": multiple sources exist." + pycolor.END)
+                    logger.error(" " + pycolor.RED + prob.upper() + ": Multiple sources exist." + pycolor.END)
                     exit(1)
                 else:
                     prob = pathlib.Path(os.getcwd()).name
@@ -66,9 +66,9 @@ def main(argv):
     else:
         srcs = glob.glob('*.cpp')
         if not srcs:
-            logger.error(pycolor.BRIGHT_RED + " no source file found." + pycolor.END)
+            logger.error(pycolor.BRIGHT_RED + " No source file found." + pycolor.END)
         elif len(srcs) > 1:
-            logger.error(pycolor.BRIGHT_RED + " multiple sources exist." + pycolor.END)
+            logger.error(pycolor.BRIGHT_RED + " Multiple sources exist." + pycolor.END)
         else:
             src = srcs[0]
             prob = pathlib.Path(os.getcwd()).name

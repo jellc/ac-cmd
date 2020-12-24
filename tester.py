@@ -41,7 +41,7 @@ def main(args):
         srcs = glob.glob('*.cpp')
 
     if not srcs:
-        logger.error(pycolor.BRIGHT_RED + " no source code found.")
+        logger.error(pycolor.BRIGHT_RED + " No source code found.")
 
     first = True
     exit_stat = 0
@@ -51,14 +51,15 @@ def main(args):
             first = False
         else:
             print(pycolor.BLUE + "-" * 50 + pycolor.END)
-        logger.info(" compiling " + f + "...")
+        logger.info(" Compiling " + f + "...")
         ff = os.path.splitext(f)[0]
         ret = subprocess.call(["g++", f, "-o", ff] + options)
         if ret:
-            logger.error(pycolor.BRIGHT_RED + " compilation error.")
+            logger.error(pycolor.BRIGHT_RED + " Compilation error.")
             exit_stat = 1
+            continue
         cmd[3] = './' + ff
-        logger.info(" testing " + ff + "...")
+        logger.info(" Testing " + ff + "...")
         ret = subprocess.call(cmd)
 
     sys.exit(exit_stat)

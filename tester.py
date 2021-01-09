@@ -59,7 +59,7 @@ def main(args):
             exit_stat = 1
             continue
         cmd[3] = './' + ff
-        logger.info(" Testing " + ff + "...")
+        logger.info(" Testing " + f + "...")
         ret = subprocess.call(cmd)
 
     sys.exit(exit_stat)

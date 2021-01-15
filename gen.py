@@ -38,5 +38,6 @@ def main(args):
 
     for d in os.listdir(dire):
         here = os.path.join(dire, d)
+        subprocess.call(["code", d + ".cpp"], cwd=here.lower())
         with open(os.path.join(here, generator), "w") as genf:
             subprocess.call(["oj-template", "-t", "generate.py", os.path.join(contest_url, 'tasks', contest_id + '_' + d)], cwd=here, stdout=genf)

@@ -8,10 +8,12 @@ from logging import getLogger, basicConfig, INFO
 logger = getLogger(__name__)
 
 from colors import pycolor
-generator = 'gen.py'
+generator = 'generate'
 
 
 def main(args):
+    tmpl = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'template')
+
     if not args:
         logger.error(pycolor.BRIGHT_RED + " no contest id specified.")
         sys.exit(1)
@@ -39,5 +41,8 @@ def main(args):
     for d in os.listdir(dire):
         here = os.path.join(dire, d)
         subprocess.call(["code", d + ".cpp"], cwd=here.lower())
+
         with open(os.path.join(here, generator), "w") as genf:
-            subprocess.call(["oj-template", "-t", "generate.py", os.path.join(contest_url, 'tasks', contest_id + '_' + d)], cwd=here, stdout=genf)
+            subprocess.call(["oj-template", "-t", tmpl, os.path.join(contest_url, 'tasks', contest_id + '_' + d)], cwd=here, stdout=genf)
+
+        subprocess.call(["chmod", "u+x", generator], cwd=here)

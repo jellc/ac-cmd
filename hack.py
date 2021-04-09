@@ -1,13 +1,11 @@
 import subprocess
 from colors import pycolor
-import sys
 import os
-from logging import getLogger, basicConfig, INFO
+from logging import getLogger
 logger = getLogger(__name__)
 
 import gen
 import tester
-import colors
 
 gencmd = 'python3.8 ' + gen.generator
 

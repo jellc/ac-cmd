@@ -5,8 +5,7 @@ import subprocess
 import glob
 import pathlib
 import importlib
-import concurrent.futures
-import atcodertools
+import multiprocessing
 from logging import getLogger
 logger = getLogger(__name__)
 
@@ -33,6 +32,21 @@ def confirm(lst):
         sys.exit(1)
 
 
+def each(prob):
+    os.chdir(prob)
+    src = glob.glob('*.cpp')
+    if not src:
+        logger.error(" " + pycolor.RED + prob.upper() + ": No source file found." + pycolor.END)
+        exit(1)
+    elif len(src) > 1:
+        logger.error(" " + pycolor.RED + prob.upper() + ": Multiple sources exist." + pycolor.END)
+        exit(1)
+    else:
+        prob = pathlib.Path(os.getcwd()).name
+        bundle_and_submit(src[0], prob, os.getcwd())
+    os.chdir("..")
+
+
 def main(argv):
     src = ""
     for e in argv:
@@ -49,20 +63,9 @@ def main(argv):
         confirm(argv)
         for i in range(len(argv)):
             argv[i] = argv[i].lower()
-        with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
-            for prob in argv:
-                os.chdir(prob)
-                src = glob.glob('*.cpp')
-                if not src:
-                    logger.error(" " + pycolor.RED + prob.upper() + ": No source file found." + pycolor.END)
-                    exit(1)
-                elif len(src) > 1:
-                    logger.error(" " + pycolor.RED + prob.upper() + ": Multiple sources exist." + pycolor.END)
-                    exit(1)
-                else:
-                    prob = pathlib.Path(os.getcwd()).name
-                    print(executor.submit(bundle_and_submit, src[0], prob, os.getcwd()))
-                os.chdir("..")
+
+        pool = multiprocessing.Pool(processes=6)
+        pool.map(each, argv)
     else:
         srcs = glob.glob('*.cpp')
         if not srcs:

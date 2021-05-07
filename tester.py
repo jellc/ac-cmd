@@ -1,6 +1,6 @@
+import os
+
 options = [
-    "-I/home/euler/Library/",
-    "-I/home/euler/ac-library/",
     "-D_GLIBCXX_DEBUG",
     "-D_LOCAL",
     "-D_buffer_check",
@@ -14,15 +14,19 @@ options = [
     "-fsanitize-undefined-trap-on-error",
     "-fsanitize=undefined",
     "-fno-sanitize-recover",
+    "-I",
+    os.path.expanduser('~/Library'),
+    "-I",
+    os.path.expanduser('~/ac-library'),
 ]
 
 import sys
-import os
 import subprocess
 import glob
 from colors import pycolor
 from pathlib import Path
 from logging import getLogger, basicConfig, INFO
+
 logger = getLogger(__name__)
 
 

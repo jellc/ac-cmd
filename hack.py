@@ -2,12 +2,11 @@ import subprocess
 from colors import pycolor
 import os
 from logging import getLogger
+
 logger = getLogger(__name__)
 
 import gen
 import tester
-
-gencmd = 'python3.8 ' + gen.generator
 
 
 def main(args):
@@ -46,7 +45,7 @@ def main(args):
             logger.error(' Compilation error: {}', src2)
             exit(1)
 
-        if subprocess.call(["oj", "g/i", "--width=2", "-c", exe2, "--hack", exe1, gencmd]):
+        if subprocess.call(["oj", "g/i", "--width=2", "-c", exe2, "--hack", exe1, 'python ./generate']):
             exit(1)
 
         logger.critical(pycolor.BRIGHT_RED + " " + src1 + " hacked by " + src2 + " !")

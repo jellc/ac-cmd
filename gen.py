@@ -5,9 +5,11 @@ import glob
 import time
 import toml
 from logging import getLogger, basicConfig, INFO
+
 logger = getLogger(__name__)
 
 from colors import pycolor
+
 generator = 'generate'
 
 
@@ -31,18 +33,19 @@ def main(args):
     dire = os.path.join(workspace, contest_id)
 
     for d in os.listdir(dire):
-        here = os.path.join(dire, d)
+        here = os.path.join(dire, d.lower())
+        os.rename(os.path.join(dire, d), here)
         try:
             os.rename(os.path.join(here, 'main.cpp'), os.path.join(here, d.lower() + '.cpp'))
         except Exception:
             pass
-        os.rename(here, here.lower())
 
     for d in os.listdir(dire):
         here = os.path.join(dire, d)
-        subprocess.call(["code", d + ".cpp"], cwd=here.lower())
+        subprocess.call(["code", d + ".cpp"], cwd=here)
+        url = contest_url + '/tasks/' + contest_id + '_' + d
 
         with open(os.path.join(here, generator), "w") as genf:
-            subprocess.call(["oj-template", "-t", tmpl, os.path.join(contest_url, 'tasks', contest_id + '_' + d)], cwd=here, stdout=genf)
+            subprocess.call(["oj-template", "-t", tmpl, url], cwd=here, stdout=genf)
 
         subprocess.call(["chmod", "u+x", generator], cwd=here)

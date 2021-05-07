@@ -1,4 +1,3 @@
-# depends on '~/my-bundle' module
 import sys
 import os
 import subprocess
@@ -7,17 +6,17 @@ import pathlib
 import importlib
 import multiprocessing
 from logging import getLogger
+
 logger = getLogger(__name__)
 
 from colors import pycolor
 
 sys.path.append(os.path.expanduser('~'))
-bundler = importlib.import_module('my-bundle')
 
 
 def bundle_and_submit(src, prob, dire=None):
     bdl = os.path.splitext(src)[0] + ".bdl"
-    if bundler.bundle.main([os.path.abspath(src), os.path.abspath(bdl)]):
+    if subprocess.call(['python', 'my-bundle', os.path.abspath(src), os.path.abspath(bdl)], cwd=os.path.expanduser('~')):
         logger.error(" " + pycolor.BRIGHT_RED + src + ": bundle failed.")
         sys.exit(1)
     logger.info(pycolor.BLUE + " Submitting to " + prob.upper() + "..." + pycolor.END)

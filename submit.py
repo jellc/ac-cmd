@@ -19,13 +19,13 @@ def bundle_and_submit(src, prob, dire=None):
     if subprocess.call(['python', 'my-bundle', os.path.abspath(src), os.path.abspath(bdl)], cwd=os.path.expanduser('~')):
         logger.error(" " + pycolor.BRIGHT_RED + src + ": bundle failed.")
         sys.exit(1)
-    logger.info(pycolor.BLUE + " Submitting to " + prob.upper() + "..." + pycolor.END)
+    logger.info(" Submitting to " + pycolor.PURPLE + prob.upper() + pycolor.END + " ...")
     sub_args = ["atcoder-tools", "submit", "-u", "-f", "--code", bdl]
     subprocess.call(sub_args, cwd=dire)
 
 
 def confirm(lst):
-    logger.critical(pycolor.BLUE + " Are you sure to submit " + str(lst) + " ? (y/n)" + pycolor.END)
+    logger.critical(" Are you sure to submit " + pycolor.PURPLE + ', '.join(lst) + pycolor.END + " ? (y/n)")
     if input() != "y":
         logger.info(pycolor.PURPLE + " Canceled.")
         sys.exit(1)

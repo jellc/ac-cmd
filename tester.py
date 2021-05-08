@@ -7,9 +7,6 @@ options = [
     "-std=c++17",
     "-O2",
     "-Wall",
-    "-Wno-comment",
-    "-Wno-unknown-pragmas",
-    "-Wno-unused-function",
     "-Wl,--stack,0x10000000",
     "-fsanitize-undefined-trap-on-error",
     "-fsanitize=undefined",
@@ -20,14 +17,15 @@ options = [
     os.path.expanduser('~/ac-library'),
 ]
 
+exts = ['cpp', 'cc', 'c']
+
 import sys
 import subprocess
 import glob
+import logging
 from colors import pycolor
-from pathlib import Path
-from logging import getLogger, basicConfig, INFO
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def main(args):
@@ -35,14 +33,15 @@ def main(args):
     srcs = []
 
     for arg in args:
-        if Path.is_file(Path(arg)):
-            if os.path.splitext(arg)[1] == '.cpp':
+        if os.path.isfile(arg):
+            if os.path.splitext(arg)[1] in exts:
                 srcs.append(arg)
         else:
             cmd.append(arg)
 
     if not srcs:
-        srcs = glob.glob('*.cpp')
+        for e in exts:
+            srcs.extend(glob.glob('*.' + e))
 
     if not srcs:
         logger.error(pycolor.BRIGHT_RED + " No source code found.")
@@ -54,8 +53,8 @@ def main(args):
         if first:
             first = False
         else:
-            print(pycolor.BLUE + "-" * 50 + pycolor.END)
-        logger.info(" Compiling " + f + "...")
+            print(pycolor.BLUE + "-" * 40 + pycolor.END)
+        logger.info(" Compiling " + f + " ...")
         ff = os.path.splitext(f)[0]
         ret = subprocess.call(["g++", f, "-o", ff] + options)
         if ret:
@@ -63,7 +62,7 @@ def main(args):
             exit_stat = 1
             continue
         cmd[3] = './' + ff
-        logger.info(" Testing " + f + "...")
+        logger.info(" Testing " + f + " ...")
         ret = subprocess.call(cmd)
 
     sys.exit(exit_stat)

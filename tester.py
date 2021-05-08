@@ -1,25 +1,6 @@
-import os
-
-options = [
-    "-D_GLIBCXX_DEBUG",
-    "-D_LOCAL",
-    "-D_buffer_check",
-    "-std=c++17",
-    "-O2",
-    "-march=native",
-    "-Wall",
-    "-Wl,-stack,0x10000000",
-    "-fsanitize-undefined-trap-on-error",
-    "-fsanitize=undefined",
-    "-fno-sanitize-recover",
-    "-I",
-    os.path.expanduser('~/Library'),
-    "-I",
-    os.path.expanduser('~/ac-library'),
-]
-
 exts = ['cpp', 'cc', 'c']
 
+import os
 import sys
 import subprocess
 import glob
@@ -54,10 +35,10 @@ def main(args):
         if first:
             first = False
         else:
-            print(pycolor.BLUE + "-" * 40 + pycolor.END)
+            print(pycolor.BLUE + "-" * 30 + pycolor.END)
         logger.info(" Compiling " + f + " ...")
         ff = os.path.splitext(f)[0]
-        ret = subprocess.call(["g++", f, "-o", ff] + options)
+        ret = subprocess.call(["bash", "--login", "-c", "make " + ff])
         if ret:
             logger.error(pycolor.BRIGHT_RED + " Compilation error.")
             exit_stat = 1

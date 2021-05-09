@@ -4,9 +4,10 @@ import subprocess
 import glob
 import time
 import toml
-from logging import getLogger, basicConfig, INFO
+import json
+import logging
 
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 from colors import pycolor
 
@@ -46,6 +47,10 @@ def main(args):
         url = contest_url + '/tasks/' + contest_id + '_' + d
 
         with open(os.path.join(here, generator), "w") as genf:
-            subprocess.call(["oj-template", "-t", tmpl, url], cwd=here, stdout=genf)
+            subprocess.call(["oj-template", "-t", tmpl, url], cwd=here, stdout=genf, stderr=subprocess.DEVNULL)
 
         subprocess.call(["chmod", "u+x", generator], cwd=here)
+
+    info = {"problem": {"contest": {"contest_id": contest_id}}}
+    with open(os.path.join(dire, 'metadata.json'), 'w') as f:
+        json.dump(info, f)

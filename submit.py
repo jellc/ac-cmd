@@ -79,5 +79,5 @@ def main(argv):
             bundle_and_submit(src, prob)
 
     with open('metadata.json') as f:
-        url = 'https://atcoder.jp/contests/' + json.load(f)['problem']['contest']['contest_id'] + '/submissions'
+        url = 'https://atcoder.jp/contests/' + json.load(f)['problem']['contest']['contest_id'] + '/submissions/me'
         subprocess.call(['msedge', url])

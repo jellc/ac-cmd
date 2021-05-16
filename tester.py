@@ -38,7 +38,7 @@ def main(args):
             print(pycolor.BLUE + "-" * 30 + pycolor.END)
         logger.info(" Compiling " + f + " ...")
         ff = os.path.splitext(f)[0]
-        ret = subprocess.call(["bash", "--login", "-c", "make " + ff])
+        ret = subprocess.call(["bash", "--login", "-c", "make " + ff], shell=True)
         if ret:
             logger.error(pycolor.BRIGHT_RED + " Compilation error.")
             exit_stat = 1

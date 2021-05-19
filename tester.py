@@ -1,4 +1,4 @@
-exts = ['cpp', 'cc', 'c']
+exts = ['.cpp', '.cc', '.c']
 
 import os
 import sys

@@ -10,6 +10,13 @@ from colors import pycolor
 logger = logging.getLogger(__name__)
 
 
+def build(src):
+    logger.info(' Compiling {} ...'.format(src))
+    if subprocess.call(["bash", "--login", "-c", "make " + src], stdout=subprocess.DEVNULL, shell=True):
+        logger.error(' Compilation error: {}', src)
+        exit(1)
+
+
 def main(args):
     cmd = ["atcoder-tools", "test", "--exec", "", "-t", "2"]
     srcs = []
@@ -36,15 +43,7 @@ def main(args):
             first = False
         else:
             print(pycolor.BLUE + "-" * 30 + pycolor.END)
-        logger.info(" Compiling " + f + " ...")
         ff = os.path.splitext(f)[0]
-        ret = subprocess.call(["bash", "--login", "-c", "make " + ff], shell=True)
-        if ret:
-            logger.error(pycolor.BRIGHT_RED + " Compilation error.")
-            exit_stat = 1
-            continue
-        cmd[3] = './' + ff
-        logger.info(" Testing " + f + " ...")
-        ret = subprocess.call(cmd)
-
-    sys.exit(exit_stat)
+        build(ff)
+        logger.info(" Testing {} ...".format(ff))
+        ret = subprocess.call(["atcoder-tools", "test", "--exec", ff, "-t", "2"])

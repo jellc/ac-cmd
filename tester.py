@@ -30,7 +30,7 @@ def main(args):
 
     if not srcs:
         for e in exts:
-            srcs.extend(glob.glob('*.' + e))
+            srcs.extend(glob.glob('*' + e))
 
     if not srcs:
         logger.error(pycolor.BRIGHT_RED + " No source code found.")

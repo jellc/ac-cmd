@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 def build(src):
     logger.info(' Compiling {} ...'.format(src))
     if subprocess.call(["bash", "--login", "-c", "make " + src], stdout=subprocess.DEVNULL, shell=True):
-        logger.error(' Compilation error: {}', src)
+        logger.error(' Compilation error: {}'.format(src))
         exit(1)
 
 
